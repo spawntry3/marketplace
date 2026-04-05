@@ -22,7 +22,7 @@ export class User {
   @Column({ type: 'varchar', length: 255 })
   password!: string;
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  @Column({ type: 'varchar', length: 32, default: UserRole.USER })
   role!: UserRole;
 
   @CreateDateColumn()

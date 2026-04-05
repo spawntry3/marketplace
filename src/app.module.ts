@@ -1,36 +1,46 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { AuthModule } from './auth/auth.module.js';
-import { User } from './users/user.entity.js';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { existsSync, mkdirSync } from 'fs';
+import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
-    // Загружаем .env файл
     ConfigModule.forRoot({ isGlobal: true }),
-
-    // Подключение к PostgreSQL
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres' as const,
-        host: configService.get<string>('DB_HOST', 'localhost'),
-        port: configService.get<number>('DB_PORT', 5432),
-        username: configService.get<string>('DB_USERNAME', 'postgres'),
-        password: configService.get<string>('DB_PASSWORD', 'postgres'),
-        database: configService.get<string>('DB_NAME', 'marketplace'),
-        entities: [User],
-        synchronize: true, // В продакшене выключить!
-      }),
+      useFactory: (config: ConfigService) => {
+        const useSqlite = config.get<string>('DATABASE_USE_SQLITE') === 'true';
+        if (useSqlite) {
+          const dataDir = join(process.cwd(), 'data');
+          if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
+          return {
+            type: 'sqljs' as const,
+            autoSave: true,
+            location: join(dataDir, 'dev.sqlite'),
+            autoLoadEntities: true,
+            synchronize: true,
+          };
+        }
+        return {
+          type: 'postgres' as const,
+          host: config.get<string>('DATABASE_HOST'),
+          port: config.get<number>('DATABASE_PORT', 5432),
+          username: config.get<string>('DATABASE_USER'),
+          password: config.get<string>('DATABASE_PASSWORD'),
+          database: config.get<string>('DATABASE_NAME'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
     }),
-
-    // Модуль авторизации
     AuthModule,
+    UsersModule,
+    ProductsModule, 
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
