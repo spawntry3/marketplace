@@ -19,6 +19,9 @@ import { cn } from '@/lib/utils';
 import { getProductVisual } from '@/lib/product-visual';
 import type { Product } from '@/types/product';
 import { useMarketplace } from '@/providers/MarketplaceProvider';
+import ProductRatingBadge from '@/components/products/ProductRatingBadge';
+import ProductReviewsSection from '@/components/products/ProductReviewsSection';
+import ProductRecommendations from '@/components/products/ProductRecommendations';
 
 export default function ProductPage() {
   const params = useParams();
@@ -152,6 +155,8 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold leading-tight text-[var(--color-ink)] md:text-3xl lg:text-4xl">
             {product.name}
           </h1>
+
+          <ProductRatingBadge productId={product.id} />
 
           <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
             <span className="rounded-lg bg-[var(--color-canvas)] px-3 py-1 font-mono text-[var(--color-muted)]">
@@ -292,8 +297,12 @@ export default function ProductPage() {
               ))}
             </ul>
           </div>
+
+          <ProductReviewsSection productId={product.id} />
         </div>
       </div>
+
+      <ProductRecommendations productId={product.id} />
     </div>
   );
 }

@@ -13,7 +13,9 @@ export default function AppChrome({ children }: { children: React.ReactNode }) {
       {!isAuth && <Navbar />}
       <main
         className={
-          isAuth ? 'min-h-screen' : 'min-h-screen pb-8 pt-[7.25rem] sm:pt-[7.5rem]'
+          isAuth
+            ? 'min-h-screen'
+            : 'min-h-screen pb-8 pt-32 md:pt-[8rem]'
         }
       >
         {children}

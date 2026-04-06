@@ -131,12 +131,12 @@ function HomePageInner() {
           className="absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[var(--color-accent)]/20 blur-3xl"
           aria-hidden
         />
-        <div className="relative grid gap-8 p-8 md:grid-cols-[1.15fr_1fr] md:p-10 lg:p-12">
+        <div className="relative grid gap-6 p-5 sm:gap-8 sm:p-8 md:grid-cols-[1.15fr_1fr] md:p-10 lg:p-12">
           <div className="flex flex-col justify-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)]">
               Маркетплейс техники
             </p>
-            <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-[var(--color-ink)] md:text-4xl lg:text-[2.65rem] lg:leading-[1.1]">
+            <h1 className="mt-3 text-2xl font-bold leading-tight tracking-tight text-[var(--color-ink)] sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.1]">
               Собери идеальный ПК —{' '}
               <span className="bg-gradient-to-r from-[var(--color-primary)] to-teal-500 bg-clip-text text-transparent">
                 без лишнего шума
@@ -146,7 +146,7 @@ function HomePageInner() {
               Видеокарты, процессоры, память и накопители в одном каталоге.
               Фильтруй по категориям и находи железо под свои задачи.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <a
                 href="#catalog"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-ink)] px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-[transform,background-color] hover:bg-[var(--color-ink)]/90 active:scale-[0.98]"
@@ -159,7 +159,7 @@ function HomePageInner() {
                 />
                 К каталогу
               </a>
-              <span className="text-sm text-[var(--color-muted)]">
+              <span className="text-sm leading-snug text-[var(--color-muted)]">
                 Доставка по Казахстану · Оплата удобным способом
               </span>
             </div>
@@ -186,7 +186,7 @@ function HomePageInner() {
         </div>
       </section>
 
-      <section id="catalog" className="scroll-mt-28">
+      <section id="catalog" className="scroll-mt-32 md:scroll-mt-36">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-[var(--color-ink)] md:text-3xl">

@@ -9,8 +9,11 @@ import {
   useId,
 } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { cn } from '@/lib/utils';
+import { notifyAuthChanged } from '@/lib/auth-events';
+import { useAuth } from '@/providers/AuthProvider';
 
 function apiPath(path: string) {
   const base =
@@ -26,6 +29,8 @@ function isMobileViewport() {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { user: sessionUser, ready: authReady } = useAuth();
   const uid = useId().replace(/:/g, '');
   const [isOn, setIsOn] = useState(false);
   const isOnRef = useRef(false);
@@ -240,6 +245,7 @@ export default function LoginPage() {
         }
 
         localStorage.setItem('access_token', data.access_token);
+        notifyAuthChanged();
 
         setMessage({
           text:
@@ -250,6 +256,7 @@ export default function LoginPage() {
         });
         setEmail('');
         setPassword('');
+        router.push('/account');
       } catch (err: unknown) {
         const msg =
           err instanceof Error ? err.message : 'Что-то пошло не так';
@@ -258,7 +265,7 @@ export default function LoginPage() {
         setLoading(false);
       }
     },
-    [email, password, mode],
+    [email, password, mode, router],
   );
 
   useEffect(() => {
@@ -267,6 +274,12 @@ export default function LoginPage() {
       document.body.style.backgroundColor = '';
     };
   }, []);
+
+  useEffect(() => {
+    if (authReady && sessionUser) {
+      router.replace('/account');
+    }
+  }, [authReady, sessionUser, router]);
 
   return (
     <main className="login-lamp-page">
